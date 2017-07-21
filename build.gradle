@@ -15,8 +15,8 @@ buildscript {
 
 
 group "org.grails"
-version project.gormVersion
-println "GORM VERSION = ${project.gormVersion}"
+version "6.0.12.UCB1.SNAPSHOT"
+println "GORM VERSION = 6.0.12.UCB1.SNAPSHOT"
 
 ext {
     isTravisBuild = System.getenv().get("TRAVIS") == 'true'
@@ -110,7 +110,7 @@ subprojects { project ->
     }
     else {
         group "org.grails"
-        version project.gormVersion
+        version "6.0.12.UCB1.SNAPSHOT"
     }
 
     
@@ -226,7 +226,7 @@ subprojects { project ->
                     }                    
                 }
                 else {
-                    artifact project.file("grails-hibernate5-${project.version}.zip")                    
+                    artifact project.file("grails-hibernate5-${'6.0.12.UCB1.SNAPSHOT'}.zip")                    
                 }
 
                 if(isGrails3PluginProject) {
@@ -299,7 +299,7 @@ subprojects { project ->
                 licenses = ['Apache-2.0']
                 publicDownloadNumbers = true
                 version {
-                    name = project.version
+                    name = "6.0.12.UCB1.SNAPSHOT"
                     gpg {
                         sign = true
                         passphrase = System.getenv("SIGNING_PASSPHRASE") ?: project.hasProperty("signingPassphrase") ? project.signingPassphrase : ''
