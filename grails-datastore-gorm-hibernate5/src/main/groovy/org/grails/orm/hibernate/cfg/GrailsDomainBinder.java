@@ -3470,7 +3470,6 @@ public class GrailsDomainBinder implements MetadataContributor {
             return binder.getTypeName(property, binder.getPropertyConfig(property), getMapping(property.getOwner()));
         }
 
-
     }
 
 }
