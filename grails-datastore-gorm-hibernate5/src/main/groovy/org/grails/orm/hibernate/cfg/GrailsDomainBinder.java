@@ -1817,14 +1817,7 @@ public class GrailsDomainBinder implements MetadataContributor {
 
             Class<?> userType = getUserType(currentGrailsProp);
 
-            if (userType != null) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("[GrailsDomainBinder] Binding property [" + currentGrailsProp.getName() + "] as SimpleValue");
-                }
-                value = new SimpleValue(mappings, table);
-                bindSimpleValue(currentGrailsProp, null, (SimpleValue) value, EMPTY_PATH, mappings, sessionFactoryBeanName);
-            }
-            else if (collectionType != null) {
+            if (collectionType != null) {
                 String typeName = getTypeName(currentGrailsProp, getPropertyConfig(currentGrailsProp),gormMapping);
                 if ("serializable".equals(typeName)) {
                     value = new SimpleValue(mappings, table);
@@ -1838,6 +1831,13 @@ public class GrailsDomainBinder implements MetadataContributor {
                     mappings.addCollectionBinding(collection);
                     value = collection;
                 }
+            }
+            else if (userType != null) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("[GrailsDomainBinder] Binding property [" + currentGrailsProp.getName() + "] as SimpleValue");
+                }
+                value = new SimpleValue(mappings, table);
+                bindSimpleValue(currentGrailsProp, null, (SimpleValue) value, EMPTY_PATH, mappings, sessionFactoryBeanName);
             }
             else if (currentGrailsProp.getType().isEnum()) {
                 value = new SimpleValue(mappings, table);
@@ -3414,6 +3414,7 @@ public class GrailsDomainBinder implements MetadataContributor {
                                          String path, InFlightMetadataCollector mappings, String sessionFactoryBeanName) throws MappingException {
                     org.hibernate.mapping.Set coll = new org.hibernate.mapping.Set(mappings, owner);
                     coll.setCollectionTable(owner.getTable());
+                    coll.setTypeName(getTypeName(property));
                     binder.bindCollection(property, coll, owner, mappings, path, sessionFactoryBeanName);
                     return coll;
                 }
@@ -3427,6 +3428,7 @@ public class GrailsDomainBinder implements MetadataContributor {
                                          String path, InFlightMetadataCollector mappings, String sessionFactoryBeanName) throws MappingException {
                     org.hibernate.mapping.List coll = new org.hibernate.mapping.List(mappings, owner);
                     coll.setCollectionTable(owner.getTable());
+                    coll.setTypeName(getTypeName(property));
                     binder.bindCollection(property, coll, owner, mappings, path, sessionFactoryBeanName);
                     return coll;
                 }
@@ -3439,6 +3441,7 @@ public class GrailsDomainBinder implements MetadataContributor {
                                          String path, InFlightMetadataCollector mappings, String sessionFactoryBeanName) throws MappingException {
                     Bag coll = new Bag(mappings, owner);
                     coll.setCollectionTable(owner.getTable());
+                    coll.setTypeName(getTypeName(property));
                     binder.bindCollection(property, coll, owner, mappings, path, sessionFactoryBeanName);
                     return coll;
                 }
@@ -3450,6 +3453,7 @@ public class GrailsDomainBinder implements MetadataContributor {
                 public Collection create(ToMany property, PersistentClass owner,
                                          String path, InFlightMetadataCollector mappings, String sessionFactoryBeanName) throws MappingException {
                     org.hibernate.mapping.Map map = new org.hibernate.mapping.Map(mappings, owner);
+                    map.setTypeName(getTypeName(property));
                     binder.bindCollection(property, map, owner, mappings, path, sessionFactoryBeanName);
                     return map;
                 }
@@ -3462,6 +3466,9 @@ public class GrailsDomainBinder implements MetadataContributor {
             return INSTANCES.get(clazz);
         }
 
+        public String getTypeName(ToMany property) {
+            return binder.getTypeName(property, binder.getPropertyConfig(property), getMapping(property.getOwner()));
+        }
 
     }
 
