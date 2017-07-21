@@ -24,8 +24,8 @@ buildscript {
 
 
 group "org.grails"
-version "6.0.10.UCB1.SNAPSHOT"
-println "GORM VERSION = 6.0.10.UCB1.SNAPSHOT"
+version "6.0.10.UCB1.BUILD-SNAPSHOT"
+println "GORM VERSION = 6.0.10.UCB1.BUILD-SNAPSHOT"
 
 ext {
     isTravisBuild = System.getenv().get("TRAVIS") == 'true'
@@ -128,7 +128,7 @@ subprojects { project ->
     }
     else {
         group "org.grails"
-        version "6.0.10.UCB1.SNAPSHOT"
+        version "6.0.10.UCB1.BUILD-SNAPSHOT"
     }
 
     
@@ -231,7 +231,7 @@ subprojects { project ->
 
         repositories {
             maven {
-                url "${project.property('default_deploy_url')}/${default_deploy_grails_plugin_repo}"
+                url "${project.property('default_deploy_url')}/calnet-libs"
                 credentials {
                     username project.property("default_deploy_user")
                     password project.property("default_deploy_password")
@@ -254,7 +254,7 @@ subprojects { project ->
                     }                    
                 }
                 else {
-                    artifact project.file("grails-hibernate5-${'6.0.10.UCB1.SNAPSHOT'}.zip")
+                    artifact project.file("grails-hibernate5-${'6.0.10.UCB1.BUILD-SNAPSHOT'}.zip")
                 }
 
                 if(isGrails3PluginProject) {
@@ -327,7 +327,7 @@ subprojects { project ->
                 licenses = ['Apache-2.0']
                 publicDownloadNumbers = true
                 version {
-                    name = "6.0.10.UCB1.SNAPSHOT"
+                    name = "6.0.10.UCB1.BUILD-SNAPSHOT"
                     gpg {
                         sign = true
                         passphrase = System.getenv("SIGNING_PASSPHRASE") ?: project.hasProperty("signingPassphrase") ? project.signingPassphrase : ''
