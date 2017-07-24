@@ -1840,13 +1840,6 @@ public class GrailsDomainBinder implements MetadataContributor {
                     value = collection;
                 }
             }
-            else if (userType != null) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("[GrailsDomainBinder] Binding property [" + currentGrailsProp.getName() + "] as SimpleValue");
-                }
-                value = new SimpleValue(mappings, table);
-                bindSimpleValue(currentGrailsProp, null, (SimpleValue) value, EMPTY_PATH, mappings, sessionFactoryBeanName);
-            }
             else if (currentGrailsProp.getType().isEnum()) {
                 value = new SimpleValue(mappings, table);
                 bindEnumType(currentGrailsProp, (SimpleValue) value, EMPTY_PATH, sessionFactoryBeanName);
