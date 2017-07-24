@@ -46,6 +46,7 @@ import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.Table;
 import org.hibernate.persister.entity.UnionSubclassEntityPersister;
 import org.hibernate.type.*;
+import org.hibernate.usertype.UserCollectionType;
 import org.jboss.jandex.IndexView;
 import org.springframework.util.StringUtils;
 
@@ -1817,7 +1818,14 @@ public class GrailsDomainBinder implements MetadataContributor {
 
             Class<?> userType = getUserType(currentGrailsProp);
 
-            if (collectionType != null) {
+            if (userType != null && !UserCollectionType.class.isAssignableFrom(userType)) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("[GrailsDomainBinder] Binding property [" + currentGrailsProp.getName() + "] as SimpleValue");
+                }
+                value = new SimpleValue(mappings, table);
+                bindSimpleValue(currentGrailsProp, null, (SimpleValue) value, EMPTY_PATH, mappings, sessionFactoryBeanName);
+            }
+            else if (collectionType != null) {
                 String typeName = getTypeName(currentGrailsProp, getPropertyConfig(currentGrailsProp),gormMapping);
                 if ("serializable".equals(typeName)) {
                     value = new SimpleValue(mappings, table);
